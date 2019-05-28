@@ -1,46 +1,25 @@
 require('./config/config');
 
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const colors = require('colors');
+
+const app = express();
 
 // parse application/x-www-form-urlencoded
+//This lines were copied directly from the documentation at www.npmjs.com/package/body-parser
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
 
+app.use (  require('./routes/usuarios')   );
 
-
-app.get('/usuario/:id', (req, res) => {
-  let id = req.params.id;
-  res.json({
-    tipoPeticion: 'getUsuario',
-    id
-  });
+mongoose.connect('mongodb://localhost:27017/cafe', { useNewUrlParser: true }, (err, res) => {
+  if (err) throw new Error("no se pudo conectar a la base de datos", err);
+  console.log('Base de datos ONLINE'.green);
 });
 
-app.post('/usuario', (req, res) => {
-  let body = req.body;
-  res.json({
-    tipoPeticion: 'postUsuario',
-    persona: body
-  });
-});
-
-app.put('/usuario/:id', (req, res) => {
-  let id = req.params.id;
-
-  res.json({
-    tipoPeticion: 'putUsuario',
-    id
-  });
-});
-
-app.delete('/usuario', (req, res) => {
-  res.json({
-    tipoPeticion: 'deleteUsuario'
-  })
-});
 
 app.listen(process.env.PORT, () => {
     console.log("Escuchando peticiones en el puerto 3000");
