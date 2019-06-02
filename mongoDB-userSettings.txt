@@ -1,0 +1,7 @@
+User Name:consugus
+Password: 23101802
+
+MongoDB URL
+mongodb+srv://consugus:<password>@cluster0-lsyja.mongodb.net/test
+
+mongodb+srv://consugus:23101802@cluster0-lsyja.mongodb.net/cafe
