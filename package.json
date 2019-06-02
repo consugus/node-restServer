@@ -1,6 +1,9 @@
 {
   "name": "seccion08-restserver",
   "version": "1.0.0",
+  "engines": {
+    "node": "10.16.0"
+  },
   "description": "App para ejemplificar la creación de una API REST",
   "main": "index.js",
   "scripts": {

@@ -22,10 +22,8 @@ let urlDB;
 if (env === "env") {
     urlDB = "mongodb://localhost:27017/cafe";
 } else {
-    urlDB = "mongodb+srv://consugus:mdbcon5u9u$@cluster0-lsyja.mongodb.net/cafe"
+    urlDB = process.env.MONGO_URL;
 }
-
-// let urlDB = "mongodb+srv://consugus:mdbcon5u9u$@cluster0-lsyja.mongodb.net/cafe"
 
 module.exports = (
     urlDB
