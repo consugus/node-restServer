@@ -105,20 +105,6 @@ app.delete('/User/:id', (req, res) => {
   let id = req.params.id;
   let state = {state: false};
 
-
-  // User.findByIdAndRemove( id, (err, userDeleted) => {
-  //   if (err)
-  //     return res.status(400).json({
-  //       ok: false,
-  //       err
-  //     });
-
-  //   res.status(200).json({
-  //     ok: true,
-  //     userDeleted
-  //   });
-  // });
-
     User.findOneAndUpdate({_id: id}, state, (err, userDeleted) => {
       if (err) return res.status(400).json({
         ok: false,
