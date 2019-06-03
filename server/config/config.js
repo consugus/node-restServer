@@ -29,8 +29,8 @@ if (env === "env") {
 //              Token
 //=======================================
 
-// process.env.SECRET_TOKEN = process.env.SEED ||"seed de desarrollo";
-process.env.SECRET_TOKEN = "seed de desarrollo";
+process.env.SECRET_TOKEN = process.env.SEED || "seed de desarrollo";
+// process.env.SECRET_TOKEN = "seed de desarrollo";
 process.env.EXPIRATION_TOKEN = 2592000; // 1 mes
 
 
