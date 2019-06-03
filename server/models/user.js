@@ -40,6 +40,9 @@ let userSchema = new Schema({
         required: false
     },
 });
+
+//pick: '_id', name', 'email', 'img', 'role', 'state', 'google'
+
 userSchema.plugin(uniqueValidator, {message: "Error, ya existe en la base de datos el email '{VALUE}'"});
 
 module.exports = mongoose.model('User', userSchema);

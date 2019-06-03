@@ -25,6 +25,16 @@ if (env === "env") {
     urlDB = process.env.MONGO_URL;
 }
 
+//=======================================
+//              Token
+//=======================================
+
+process.env.SECRET_TOKEN = process.env.SEED ||"seed de desarrollo";
+process.env.EXPIRATION_TOKEN = 2592000; // 1 mes
+
+
+
+
 module.exports = (
     urlDB
 )
