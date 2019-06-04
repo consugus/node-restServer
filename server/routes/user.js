@@ -1,14 +1,15 @@
 const express = require('express');
 const app = express();
 const User = require('../models/user');
+const { verifyToken }  = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
 
-app.get('/User', (req, res) => {
+app.get('/User', verifyToken, (req, res) => {
 
   let from = Number(req.query.from || 0);
-  let elementsByPage = Number(req.query.elementsByPage || 5);
+  let elementsByPage = Number(req.query.to || 5);
   let filters = {state: true}; // For example "{google: true}"
   let fieldsToShow = 'name email ing role state google';
 
@@ -24,7 +25,7 @@ app.get('/User', (req, res) => {
         });
       }
 
-      User.count({}, (err, userCount) => {
+      User.countDocuments({}, (err, userCount) => {
         res.status(200).json({
           ok: true,
           userCount,
@@ -34,7 +35,7 @@ app.get('/User', (req, res) => {
     });
   });
 
-app.get('/User/:id', (req, res) => {
+app.get('/User/:id', verifyToken, (req, res) => {
   let id = req.params.id;
   User.findOne({_id:id}, (err, user) => {
 
@@ -56,7 +57,7 @@ app.get('/User/:id', (req, res) => {
   });
 });
 
-app.post('/User', (req, res) => {
+app.post('/User', verifyToken, (req, res) => {
   let body = req.body;
   let user = new User({
     name: body.name,
@@ -75,13 +76,13 @@ app.post('/User', (req, res) => {
       });
     res.status(200).json({
       ok: true,
-      user: userDB
+      user: _.pick(userDB, '_id', 'name', 'email', 'img', 'role', 'state', 'google')
     });
   });
 
 });
 
-app.put('/User/:id', (req, res) => {
+app.put('/User/:id', verifyToken,  (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'state']);
 
@@ -101,7 +102,7 @@ app.put('/User/:id', (req, res) => {
 
 });
 
-app.delete('/User/:id', (req, res) => {
+app.delete('/User/:id', verifyToken, (req, res) => {
   let id = req.params.id;
   let state = {state: false};
 
@@ -120,7 +121,8 @@ app.delete('/User/:id', (req, res) => {
 
       res.status(200).json({
         ok: true,
-        userDeleted
+        user: _.pick(userDeleted, '_id', 'name', 'email', 'img', 'role', 'state', 'google')
+
       });
     });
   });
