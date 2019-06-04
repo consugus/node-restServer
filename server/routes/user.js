@@ -1,7 +1,7 @@
 const express = require('express');
 const app = express();
 const User = require('../models/user');
-const { verifyToken }  = require('../middlewares/auth');
+const { verifyToken, verifyAdmin_Token }  = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
@@ -57,7 +57,7 @@ app.get('/User/:id', verifyToken, (req, res) => {
   });
 });
 
-app.post('/User', verifyToken, (req, res) => {
+app.post('/User', [verifyToken, verifyAdmin_Token], (req, res) => {
   let body = req.body;
   let user = new User({
     name: body.name,
@@ -82,7 +82,7 @@ app.post('/User', verifyToken, (req, res) => {
 
 });
 
-app.put('/User/:id', verifyToken,  (req, res) => {
+app.put('/User/:id', [verifyToken, verifyAdmin_Token],  (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'state']);
 
@@ -102,7 +102,7 @@ app.put('/User/:id', verifyToken,  (req, res) => {
 
 });
 
-app.delete('/User/:id', verifyToken, (req, res) => {
+app.delete('/User/:id', [verifyToken, verifyAdmin_Token], (req, res) => {
   let id = req.params.id;
   let state = {state: false};
 
