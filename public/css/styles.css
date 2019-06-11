@@ -1,0 +1,14 @@
+body {
+    background-color: beige;
+}
+
+.sign-in {
+    width: 300px;
+    height: 400px;
+    background-color: goldenrod;
+    line-height: 200px;
+    margin: 0 auto;
+    text-align: center;
+
+}
+

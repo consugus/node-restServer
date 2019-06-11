@@ -5,6 +5,7 @@ const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const colors = require('colors');
 const url = require("./config/config");
+const path = require ('path');
 
 const app = express();
 
@@ -17,6 +18,8 @@ app.use(bodyParser.json());
 // Configuración global de rutas
 app.use (  require('./routes/index')   );
 
+//habilitar la carpeta public
+app.use ( express.static( path.resolve(__dirname , "..//public") ));
 
 
 mongoose.connect( url, { useNewUrlParser: true, useCreateIndex: true }, (err, res) => {
