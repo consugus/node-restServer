@@ -8,7 +8,8 @@ function onSignIn(googleUser) {
 
     var id_token = googleUser.getAuthResponse().id_token;
 
-    // console.log(id_token);
+    //Esta es la línea que hay que habilitar para mostrar el token que viene de la cuenta de google
+    // console.log("id_token: " + id_token);
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', '/google');

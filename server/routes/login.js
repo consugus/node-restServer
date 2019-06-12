@@ -134,7 +134,10 @@ app.post('/google', async (req, res) => {
             usuario.google = true;
             usuario.password = ":)";
 
+            console.log(usuario)
+
             usuario.save ( (err, usuarioDB) => {
+                console.log("err: " + err)
                 if(err){
                     return res.status(500).json({
                         ok: false,
