@@ -19,7 +19,8 @@ app.use(bodyParser.json());
 app.use (  require('./routes/index')   );
 
 //habilitar la carpeta public
-app.use ( express.static( path.resolve(__dirname , "..//public") ));
+// app.use ( express.static( path.resolve(__dirname , "../public") ));
+app.use(express.static(path.resolve(__dirname, '../public')));
 
 
 mongoose.connect( url, { useNewUrlParser: true, useCreateIndex: true }, (err, res) => {
