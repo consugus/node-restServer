@@ -1,6 +1,6 @@
 const express = require('express');
 const app = express();
-const User = require('../models/user');
+const User = require('../models/userModel');
 const { verifyToken, verifyAdmin_Token }  = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
@@ -11,7 +11,7 @@ app.get('/User', verifyToken, (req, res) => {
   let from = Number(req.query.from || 0);
   let elementsByPage = Number(req.query.to || 5);
   let filters = {state: true}; // For example "{google: true}"
-  let fieldsToShow = 'name email ing role state google';
+  let fieldsToShow = 'name email img role state google';
 
   User.find(filters, fieldsToShow)
     .skip(from)

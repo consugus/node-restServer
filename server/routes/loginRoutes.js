@@ -1,7 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt');
 var jwt = require("jsonwebtoken");
-const User = require('../models/user');
+const User = require('../models/userModel');
 const app = express();
 const _ = require('underscore');
 
