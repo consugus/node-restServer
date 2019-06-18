@@ -11,6 +11,10 @@ let categorySchema = new Schema({
     },
     user: {
         type: Schema.Types.ObjectId, ref: 'userModel'
+    },
+    state: {
+        type: Boolean,
+        default: true
     }
 });
 

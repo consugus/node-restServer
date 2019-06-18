@@ -18,7 +18,6 @@ app.use(bodyParser.json());
 // Configuración global de rutas
 app.use (  require('./routes/index')   );
 
-// console.log("llama a las rutas desde el server");
 
 //habilitar la carpeta public
 // app.use ( express.static( path.resolve(__dirname , "../public") ));

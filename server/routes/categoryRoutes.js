@@ -8,23 +8,28 @@ const _ = require('underscore');
 // ====================================
 //    Devolver todas las categorías
 // ====================================
-// TODO:
 app.get( "/category", [verifyToken], (req, res) => {
-    if(err){
-        return res.status(400).json({
-            ok: false,
-            err
-        });
-    };
-    Category.find( (err, categoriesDB) => {
+    let state = {state: true};
+
+    Category.find( state, (err, categoriesDB) => {
         if(err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        if(!categoriesDB){
             return res.status(500).json({
                 ok: false,
                 err: {
                     message: "No se encontraron categorías almacenadas"
                 }
             });
-        }
+        };
+
+
+
         res.status(200).json({
             ok: true,
             categoriesDB
@@ -36,35 +41,34 @@ app.get( "/category", [verifyToken], (req, res) => {
 // ====================================
 //    Devolver categoría dado un ID
 // ====================================
-// TODO:
 app.get( "/category/:id", [verifyToken], (req, res) => {
     //Debe retornar el ID de la categoría
-    let id = req.params.id
-    if(err){
-        return res.status(400).json({
-            ok: false,
-            err
-        });
-    };
+    let id = req.params.id;
+    let state = {state: true};
+
     Category.findById( id,  (err, categoryDB) => {
         if(err) {
+            return res.status(400).json({
+                ok: false,
+                err
+            });
+        }
+
+        if(!categoryDB){
             return res.status(500).json({
                 ok: false,
                 err: {
                     message: `La categoría con el ID: ${id} no existe en la base de datos`
                 }
             });
-        }
+        };
+
         res.status(200).json({
             ok: true,
             categoryDB
         });
     });
-
-
-
 });
-
 
 // ====================================
 //          Crear categoría
@@ -115,8 +119,6 @@ app.put( "/category/:id", [verifyToken], (req, res) => {
     let id = req.params.id;
     let body = req.body;
 
-    console.log("id: " + id + "\tbody: " + body.name);
-
     Category.findOneAndUpdate( {_id: id}, body, {new: true, runValidators: true}, (err, categoryDB) => {
         if(err){
             return res.status(400).json({
@@ -146,13 +148,34 @@ app.put( "/category/:id", [verifyToken], (req, res) => {
 // ====================================
 //   Eliminar categoría dado un ID
 // ====================================
-// TODO:
 app.delete( "/category/:id", [verifyToken, verifyAdmin_Token], (req, res) => {
-    //Yo voy a implementar un borrado lógico
+    // Implementar un borrado lógico
+    let id = req.params.id;
+    let state = {state: false};
+
+    console.log("hasta acá se ejecutó ok");
+
+    Category.findOneAndUpdate( {_id: id}, state, {new: true, runValidators: true}, (err, userDeleted) => {
+        if ( err ) return res.status(400).json({
+            ok: false,
+            err
+          });
+
+        if( !userDeleted ) return res.status(500).json({
+            ok: false,
+            err: {
+                message: `No se pudo borrar la categoría con el id ${id}`
+            }
+        });
+
+        res.status(200).json({
+            ok: true,
+            userDeleted
+        });
+
+    });
 });
 
-
-// TODO: //Grabar todos los servicios en Postman
 
 module.exports = (
     app
