@@ -6,15 +6,16 @@ const uniqueValidator = require('mongoose-unique-validator');
 let categorySchema = new Schema({
     name: {
         type: String,
-        unique: false,
+        unique: true,
         required: [true, 'El nombre de la categoría es requerido']
-    },
-    user: {
-        type: Schema.Types.ObjectId, ref: 'userModel'
     },
     state: {
         type: Boolean,
         default: true
+    },
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User'
     }
 });
 
