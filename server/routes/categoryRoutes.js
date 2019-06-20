@@ -9,9 +9,9 @@ const Category = require('../models/categoryModel');
 //    Devolver todas las categorías
 // ====================================
 app.get( '/category', [verifyToken], (req, res) => {
-    let state = {state: true};
+    let filters = {state: true};
 
-    Category.find( (err, categoriesDB) => {
+    Category.find( filters, (err, categoriesDB) => {
         if(err) {
             return res.status(500).json({
                 ok: false,
@@ -44,9 +44,9 @@ app.get( '/category', [verifyToken], (req, res) => {
 app.get( "/category/:id", [verifyToken], (req, res) => {
     //Debe retornar el ID de la categoría
     let id = req.params.id;
-    let state = {state: true};
+    let filters = {state: true};
 
-    Category.findById( id,  (err, categoryDB) => {
+    Category.findById( id, filters,  (err, categoryDB) => {
         if(err) {
             return res.status(500).json({
                 ok: false,
@@ -54,7 +54,7 @@ app.get( "/category/:id", [verifyToken], (req, res) => {
             });
         }
 
-        if(!categoryDB){
+        if(!categoryDB || !categoryDB.state){
             return res.status(400).json({
                 ok: false,
                 err: {
@@ -103,10 +103,7 @@ app.post( "/category", [verifyToken], (req, res) => {
             ok: true,
             category: categoryDB
         });
-
-    })
-    .sort({name: 1}) // es lo mismo que poner .sort('name'), pero de esta forma con -1 (o 1) se puede especificar ascendente o descendentes
-    .populate('user', 'name email') // .populate('nameOfThePropertyYouWantToPopulate', 'modelProperty1 modelProperty2 etc...')
+    });
 });
 
 
@@ -173,7 +170,6 @@ app.delete( "/category/:id", [verifyToken, verifyAdmin_Token], (req, res) => {
         });
 
     })
-    .sort({name: 1}) // es lo mismo que poner .sort('name'), pero de esta forma con -1 (o 1) se puede especificar ascendente o descendentes
     .populate('user', 'name email') // .populate('nameOfThePropertyYouWantToPopulate', 'modelProperty1 modelProperty2 etc...')
 });
 

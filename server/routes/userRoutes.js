@@ -5,7 +5,9 @@ const { verifyToken, verifyAdmin_Token }  = require('../middlewares/auth');
 const bcrypt = require('bcrypt');
 const _ = require('underscore');
 
-
+// =======================================
+//  Devolver todos los usuarios, paginados
+// =======================================
 app.get('/User', verifyToken, (req, res) => {
 
   let from = Number(req.query.from || 0);
@@ -16,25 +18,35 @@ app.get('/User', verifyToken, (req, res) => {
   User.find(filters, fieldsToShow)
     .skip(from)
     .limit(elementsByPage)
-    .exec( (err, users) => {
+    .exec( (err, usersDB) => {
 
       if (err) {
-        return res.status(400).json({
+        return res.status(500).json({
           ok: false,
           err
         });
       }
 
+      if(!usersDB) return res.status(400).json({
+        ok: false,
+        err: {
+          message: "No se encontraron usuarios en la BD"
+        }
+      });
+
       User.countDocuments({}, (err, userCount) => {
         res.status(200).json({
           ok: true,
           userCount,
-          users
+          usersDB
         });
       });
     });
   });
 
+// ====================================
+//   Devolver un usuario, dado un ID
+// ====================================
 app.get('/User/:id', verifyToken, (req, res) => {
   let id = req.params.id;
   User.findOne({_id:id}, (err, user) => {
@@ -44,7 +56,7 @@ app.get('/User/:id', verifyToken, (req, res) => {
       err
     });
 
-    if (!user.state) return res.status(400).json({
+    if (!user || !user.state) return res.status(400).json({
       ok: false,
       err: `El usuario con el ID: ${id} no existe en la base de datos`
     });
@@ -57,6 +69,9 @@ app.get('/User/:id', verifyToken, (req, res) => {
   });
 });
 
+// ====================================
+//      Agregar un usuario a la BD
+// ====================================
 app.post('/User', [verifyToken, verifyAdmin_Token], (req, res) => {
   let body = req.body;
   let user = new User({
@@ -81,7 +96,9 @@ app.post('/User', [verifyToken, verifyAdmin_Token], (req, res) => {
   });
 
 });
-
+// =======================================
+// Actualizar la información de un Usuario
+// =======================================
 app.put('/User/:id', [verifyToken, verifyAdmin_Token],  (req, res) => {
   let id = req.params.id;
   let body = _.pick(req.body, ['name', 'email', 'img', 'role', 'state']);
@@ -101,6 +118,10 @@ app.put('/User/:id', [verifyToken, verifyAdmin_Token],  (req, res) => {
   });
 
 });
+
+// ====================================
+//    Eliminado lógico de un usuario
+// ====================================
 
 app.delete('/User/:id', [verifyToken, verifyAdmin_Token], (req, res) => {
   let id = req.params.id;

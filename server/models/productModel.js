@@ -1,4 +1,5 @@
 var mongoose = require('mongoose');
+var uniqueValidator = require('mongoose-unique-validator');
 var Schema = mongoose.Schema;
 
 
@@ -22,14 +23,15 @@ var productSchema = new Schema({
     },
     category: {
         type: Schema.Types.ObjectId,
-        ref: 'Categoria',
+        ref: 'Category',
         required: true
     },
     user: {
         type: Schema.Types.ObjectId,
-        ref: 'Usuario'
+        ref: 'User'
     }
 });
 
+// productSchema.plugin(uniqueValidator, {message: "Error, ya existe en la base de datos el producto '{VALUE}'"});
 
 module.exports = mongoose.model('Product', productSchema);
