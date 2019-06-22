@@ -99,18 +99,11 @@ app.get( "/products/:id", [verifyToken], (req, res) => {
 // ====================================
 //    Devolver producto por nombre
 // ====================================
-// TODO:
 app.get("/products/search/:term", [verifyToken], ( req, res ) => {
     let term = req.params.term;
     let regex = new RegExp(term, 'i');
 
-    // console.log('regex: ', regex);
-
-    // res.status(200).json({
-    //     regex: regex
-    // });
-
-    Products.find( { name: regex}, ( err, productDB ) => {
+    Products.find( { name: regex }, ( err, productDB ) => {
         if(err) return res.status(500).json({
             ok: false,
             err
@@ -131,7 +124,6 @@ app.get("/products/search/:term", [verifyToken], ( req, res ) => {
     });
 
 });
-
 
 
 // ====================================
