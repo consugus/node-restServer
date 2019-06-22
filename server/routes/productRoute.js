@@ -17,7 +17,7 @@ app.get( '/products', [verifyToken], (req, res) => {
     let from = Number(req.query.from || 0);                 // Where to start listing Products, default = 0
     let elementsByPage = Number(req.query.to || 5);         // How many Products are going to be listed, default = 0
     let filters = {available: true};                        // For example "{available: true}"
-    let fieldsToShow = 'name unitPrice description user';   // Fields to show, obviously
+    let fieldsToShow = 'name unitPrice description user img';   // Fields to show, obviously
 
     Products.find ( filters, fieldsToShow, ( err, productsDB ) => {
         if (err) return res.status(500).json({
@@ -70,7 +70,7 @@ app.get( "/products/:id", [verifyToken], (req, res) => {
 
     let id = req.params.id;
     let filters = {available: true};
-    let fieldsToShow = 'name unitPrice';
+    let fieldsToShow = 'name unitPrice img';
 
     Products.findById(id, ( err, productDB ) => {
         if(err) return res.status(500).json({
@@ -84,7 +84,6 @@ app.get( "/products/:id", [verifyToken], (req, res) => {
                 message: `No se encontró el producto con el ID ${id} en la BD`
             }
         });
-
 
         res.status(200).json({
             ok: true,
@@ -138,6 +137,7 @@ app.post( "/products", [verifyToken], (req, res) => {
         name: body.name,
         unitPrice: Number(body.unitPrice),
         description: body.description,
+        img: body.img,
         category: body.category,
         user: req.usuario._id
     });
