@@ -6,6 +6,7 @@ app.use ( require ('./loginRoutes')     );
 app.use ( require ('./categoryRoutes')  );
 app.use ( require ('./productRoute')    );
 app.use ( require ('./uploadsRoute')    );
+app.use ( require ('./imagesRoutes')    );
 
 
 module.exports = (

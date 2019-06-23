@@ -43,7 +43,35 @@ let verifyAdmin_Token = (req, res, next) => {
 };
 
 
+// ==================================
+//        Image Token Verification
+// ==================================
+
+let imgTokenVerification = (req, res, next) => {
+    let token = req.query.token;
+
+    jwt.verify(token, process.env.SECRET_TOKEN, (err, payload) => {
+
+        if (err) return res.status(401).json({
+            ok: false,
+            err: {
+                message: "No es un usuario válido",
+                err, 
+                token
+            }
+        });
+
+        req.usuario = payload.usuario;
+        console.log("token: " + token);
+        next();
+    });
+
+}
+
+
+
 module.exports = {
     verifyToken,
-    verifyAdmin_Token
+    verifyAdmin_Token,
+    imgTokenVerification
 }
