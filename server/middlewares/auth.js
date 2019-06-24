@@ -56,7 +56,7 @@ let imgTokenVerification = (req, res, next) => {
             ok: false,
             err: {
                 message: "No es un usuario válido",
-                err, 
+                err,
                 token
             }
         });
